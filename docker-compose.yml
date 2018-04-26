@@ -1,0 +1,38 @@
+version: '3.6'
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123__
+      MYSQL_DATABASE: db_kindle_push
+      MYSQL_USER: kpuser
+      MYSQL_PASSWORD: abc123_
+    ports:
+      - 3306:3306
+    networks:
+      - kindle-push-network
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8081:8080
+    networks:
+      - kindle-push-network
+  kindle-push:
+    build: ./
+    image: wqwz111/kindle-push:latest
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 80:8080
+      - 5005:5005
+    networks:
+      - kindle-push-network
+networks:
+  kindle-push-network:
+
+
